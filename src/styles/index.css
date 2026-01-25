@@ -1,0 +1,156 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Ioskeley Mono';
+  src: url('./WOFF2/IoskeleyMono-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Ioskeley Mono';
+  src: url('./WOFF2/IoskeleyMono-LightItalic.woff2') format('woff2');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Ioskeley Mono';
+  src: url('./WOFF2/IoskeleyMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Ioskeley Mono';
+  src: url('./WOFF2/IoskeleyMono-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Ioskeley Mono';
+  src: url('./WOFF2/IoskeleyMono-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Ioskeley Mono';
+  src: url('./WOFF2/IoskeleyMono-MediumItalic.woff2') format('woff2');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Ioskeley Mono';
+  src: url('./WOFF2/IoskeleyMono-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Ioskeley Mono';
+  src: url('./WOFF2/IoskeleyMono-SemiBoldItalic.woff2') format('woff2');
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Ioskeley Mono';
+  src: url('./WOFF2/IoskeleyMono-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Ioskeley Mono';
+  src: url('./WOFF2/IoskeleyMono-BoldItalic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Ioskeley Mono';
+  src: url('./WOFF2/IoskeleyMono-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Ioskeley Mono';
+  src: url('./WOFF2/IoskeleyMono-ExtraBoldItalic.woff2') format('woff2');
+  font-weight: 800;
+  font-style: italic;
+}
+
+:root {
+  --bg-dark: #000000;
+  --gray-900: #111111;
+  --gray-800: #333333;
+  --gray-600: #666666;
+  --gray-400: #999999;
+  --gray-200: #cccccc;
+  --highlight: #eeeeee;
+}
+
+body {
+  font-family: 'Ioskeley Mono', monospace;
+  background-color: var(--bg-dark);
+  text-transform: lowercase;
+}
+
+.stippled-bg {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.4) 0.5px, transparent 0.5px);
+  background-size: 3px 3px;
+}
+
+.halftone-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 70%;
+  height: 70%;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 0.4px, transparent 0);
+  background-size: 3px 3px;
+  mask-image: radial-gradient(circle at top right, black 10%, transparent 75%);
+  -webkit-mask-image: radial-gradient(circle at top right, black 10%, transparent 75%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.data-packet {
+  position: fixed;
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 8px;
+  font-size: 7px;
+  line-height: 1.2;
+  color: var(--gray-800);
+  pointer-events: none;
+  z-index: 1;
+  filter: blur(0.4px);
+  backdrop-filter: contrast(110%);
+}
+
+.data-stream {
+  border-left: 1px solid var(--gray-900);
+  position: relative;
+}
+
+.data-stream::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -1px;
+  height: 6px;
+  width: 1px;
+  background: var(--gray-600);
+}
+
+::selection {
+  background: white;
+  color: black;
+}
