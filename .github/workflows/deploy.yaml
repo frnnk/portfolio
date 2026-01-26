@@ -33,6 +33,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/key.pem && chmod 600 ~/.ssh/key.pem
 
+      # atomically update a symlink for the static files that the deployment points to
       - name: copy dist then atomic swap for deployment
         run: |
           set -e
