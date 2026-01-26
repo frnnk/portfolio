@@ -34,6 +34,7 @@ jobs:
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/key.pem && chmod 600 ~/.ssh/key.pem
 
       # atomically update a symlink for the static files that the deployment points to
+      # we use StrictHostKeyChecking=no to bypass trusted ssh query
       - name: copy dist then atomic swap for deployment
         run: |
           set -e
