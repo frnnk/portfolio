@@ -1,0 +1,48 @@
+name: continous-deployment-port
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    name: build-and-deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      # environment config
+      - name: checkout main branch
+        uses: actions/checkout@v4
+
+      - name: download node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: install clean dependencies and build
+        run: npm ci
+      
+      - name: build dist static files
+        run: npm run build
+      
+      # transport to server + prep atomic switch
+      - name: build ssh key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/key.pem && chmod 600 ~/.ssh/key.pem
+
+      - name: copy dist then atomic swap for deployment
+        run: |
+          set -e
+          TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+          SSH_OPTS="-i ~/.ssh/key.pem -o StrictHostKeyChecking=no"
+          ssh $SSH_OPTS "ubuntu@${{ secrets.SERVER_DOMAIN }}" "mkdir -p /var/www/portfolio/$TIMESTAMP"
+          scp -r $SSH_OPTS dist "ubuntu@${{ secrets.SERVER_DOMAIN }}:/var/www/portfolio/$TIMESTAMP"
+          ssh $SSH_OPTS "ubuntu@${{ secrets.SERVER_DOMAIN }}" "ln -sfn /var/www/portfolio/$TIMESTAMP/dist /var/www/portfolio/current"
+
+
+      
+    
+
