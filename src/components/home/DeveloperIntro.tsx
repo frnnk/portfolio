@@ -10,8 +10,8 @@ export function DeveloperIntro() {
       <div className="space-y-4 text-sm leading-relaxed font-light text-[var(--gray-400)]">
         <p>
           im a software engineer interested in distributed and ai systems. 
-          currently building a playground where AI agents can talk to MCP servers while a 
-          human chaperone stands nearby.
+          currently building ai systems where agents talk to MCP servers with human in the loop
+          and tracability infra in place
         </p>
       </div>
     </section>

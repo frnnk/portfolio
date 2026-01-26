@@ -32,7 +32,7 @@ supports modular tool calling additions, and is ideal for simple yet generic tas
     content: `
 # Overview
 
-This project presents a layered architecture for mcp servers that promote single responsibility principles 
+This project presents a layered architecture for mcp servers that promotes single responsibility principles 
 with three configurable layers: an API layer, an OAuth layer, and a tool-call layer. allows for independent 
 configuration, customization, and logging of each layer
 
