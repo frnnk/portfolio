@@ -34,7 +34,7 @@ jobs:
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/key.pem && chmod 600 ~/.ssh/key.pem
 
       # atomically update a symlink for the static files that the deployment points to
-      # we use StrictHostKeyChecking=no to bypass trusted ssh query
+      # we use StrictHostKeyChecking=no to bypass trusted ssh query that occurs on the first connect
       - name: copy dist then atomic swap for deployment
         run: |
           set -e
@@ -42,7 +42,7 @@ jobs:
           SSH_OPTS="-i ~/.ssh/key.pem -o StrictHostKeyChecking=no"
           ssh $SSH_OPTS "ubuntu@${{ secrets.SERVER_DOMAIN }}" "mkdir -p /var/www/portfolio/$TIMESTAMP"
           scp -r $SSH_OPTS dist "ubuntu@${{ secrets.SERVER_DOMAIN }}:/var/www/portfolio/$TIMESTAMP"
-          ssh $SSH_OPTS "ubuntu@${{ secrets.SERVER_DOMAIN }}" "ln -sfn /var/www/portfolio/$TIMESTAMP/dist /var/www/portfolio/current"
+          ssh $SSH_OPTS "ubuntu@${{ secrets.SERVER_DOMAIN }}" "sudo ln -sfn /var/www/portfolio/$TIMESTAMP/dist /var/www/portfolio/current"
 
 
       
