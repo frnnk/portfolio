@@ -1,10 +1,12 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { getProjectsByQuarter } from '../../data/projects'
+import { getBlogsByQuarter } from '../../data/blogs'
 
 export function LeftSidebar() {
   const location = useLocation()
   const navigate = useNavigate()
-  const quarterGroups = getProjectsByQuarter()
+  const projectQuarterGroups = getProjectsByQuarter()
+  const blogQuarterGroups = getBlogsByQuarter()
 
   const scrollToSection = (id: string) => {
     if (location.pathname === '/') {
@@ -16,6 +18,10 @@ export function LeftSidebar() {
 
   const handleProjectClick = (slug: string) => {
     navigate(`/projects/${slug}`)
+  }
+
+  const handleBlogClick = (slug: string) => {
+    navigate(`/blogs/${slug}`)
   }
 
   return (
@@ -39,9 +45,8 @@ export function LeftSidebar() {
             <span className="text-[var(--gray-800)]">├─</span>
             <span className="hover:text-[var(--highlight)]">projects/</span>
           </li>
-          {quarterGroups.map((group, groupIndex) => {
+          {projectQuarterGroups.map((group) => {
             const quarterId = `quarter-${group.quarter.toLowerCase()}-${group.year}`
-            const isLastGroup = groupIndex === quarterGroups.length - 1
             return (
               <li key={quarterId} className="pl-4">
                 <div
@@ -55,7 +60,7 @@ export function LeftSidebar() {
                 </div>
                 <ul className="pl-4 space-y-2 mt-2">
                   {group.projects.map((project, projectIndex) => {
-                    const isLastProject = isLastGroup && projectIndex === group.projects.length - 1
+                    const isLastProject = projectIndex === group.projects.length - 1
                     return (
                       <li
                         key={project.slug}
@@ -67,6 +72,48 @@ export function LeftSidebar() {
                         </span>
                         <span className="text-[var(--gray-200)] hover:text-[var(--highlight)]">
                           {project.slug}
+                        </span>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </li>
+            )
+          })}
+          <li
+            className="flex items-center gap-2 group cursor-pointer"
+            onClick={() => scrollToSection('blogs')}
+          >
+            <span className="text-[var(--gray-800)]">├─</span>
+            <span className="hover:text-[var(--highlight)]">blogs/</span>
+          </li>
+          {blogQuarterGroups.map((group) => {
+            const quarterId = `blog-quarter-${group.quarter.toLowerCase()}-${group.year}`
+            return (
+              <li key={quarterId} className="pl-4">
+                <div
+                  className="flex items-center gap-2 group cursor-pointer"
+                  onClick={() => scrollToSection(quarterId)}
+                >
+                  <span className="text-[var(--gray-800)]">├─</span>
+                  <span className="text-[var(--highlight)] hover:text-white">
+                    {group.quarter.toLowerCase()}-{group.year}/
+                  </span>
+                </div>
+                <ul className="pl-4 space-y-2 mt-2">
+                  {group.blogs.map((blog, blogIndex) => {
+                    const isLastBlog = blogIndex === group.blogs.length - 1
+                    return (
+                      <li
+                        key={blog.slug}
+                        className="flex items-center gap-2 group cursor-pointer"
+                        onClick={() => handleBlogClick(blog.slug)}
+                      >
+                        <span className="text-[var(--gray-800)]">
+                          {isLastBlog ? '└─' : '├─'}
+                        </span>
+                        <span className="text-[var(--gray-200)] hover:text-[var(--highlight)]">
+                          {blog.slug}
                         </span>
                       </li>
                     )

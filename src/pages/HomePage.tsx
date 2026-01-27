@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { MainLayout } from '../components/layout/MainLayout'
 import { DeveloperIntro } from '../components/home/DeveloperIntro'
 import { ProjectManifest } from '../components/home/ProjectManifest'
+import { BlogManifest } from '../components/home/BlogManifest'
 import { ContactSection } from '../components/home/ContactSection'
 
 export function HomePage() {
@@ -24,6 +25,7 @@ export function HomePage() {
     <MainLayout>
       <DeveloperIntro />
       <ProjectManifest />
+      <BlogManifest />
       <ContactSection />
     </MainLayout>
   )
