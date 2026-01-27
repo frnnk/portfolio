@@ -8,6 +8,7 @@ export const projects: Project[] = [
     quarter: 'Q1',
     year: 2026,
     tags: ['agentic systems', 'langgraph', 'observability'],
+    github: `https://github.com/${import.meta.env.VITE_GITHUB_HANDLE}/msg-agent`,
     content: `
 # Overview
 
@@ -29,6 +30,7 @@ supports modular tool calling additions, and is ideal for simple yet generic tas
     quarter: 'Q1',
     year: 2026,
     tags: ['mcp tooling', 'oauth'],
+    github: `https://github.com/${import.meta.env.VITE_GITHUB_HANDLE}/assistant-mcp`,
     content: `
 # Overview
 
@@ -50,6 +52,7 @@ configuration, customization, and logging of each layer
     quarter: 'Q4',
     year: 2025,
     tags: ['websockets', 'typescript', 'sqlite'],
+    github: `https://github.com/${import.meta.env.VITE_GITHUB_HANDLE}/watch-party`,
     content: `
 # Overview
 

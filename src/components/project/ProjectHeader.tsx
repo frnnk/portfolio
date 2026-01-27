@@ -21,6 +21,16 @@ export function ProjectHeader({ project }: ProjectHeaderProps) {
         <h1 className="text-lg font-bold tracking-tighter text-[var(--highlight)]">
           {project.name}
         </h1>
+        {project.github && (
+          <a
+            href={project.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10px] text-[var(--gray-600)] hover:text-[var(--highlight)] transition-colors"
+          >
+            [github]
+          </a>
+        )}
         <div className="h-px flex-1 bg-white/5" />
       </div>
 

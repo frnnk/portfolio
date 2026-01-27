@@ -6,6 +6,7 @@ export interface Project {
   year: number
   tags: string[]
   content: string
+  github?: string
 }
 
 export interface QuarterGroup {
