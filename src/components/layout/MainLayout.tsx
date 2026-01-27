@@ -1,6 +1,6 @@
 import { Header } from './Header'
 import { LeftSidebar } from './LeftSidebar'
-import { RightSidebar } from './RightSidebar'
+// import { RightSidebar } from './RightSidebar'
 import { Footer } from './Footer'
 import { HalftoneOverlay } from '../common/HalftoneOverlay'
 
@@ -21,7 +21,7 @@ export function MainLayout({ children }: MainLayoutProps) {
         <main className="flex-1 p-8 md:p-16 relative">
           {children}
         </main>
-        <RightSidebar />
+        {/* <RightSidebar /> */}
       </div>
 
       <Footer />

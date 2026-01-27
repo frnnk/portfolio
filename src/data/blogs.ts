@@ -3,48 +3,54 @@ import type { Blog, BlogQuarterGroup } from '../types'
 export const blogs: Blog[] = [
   {
     slug: 'building-agentic-systems',
-    title: 'Building Agentic Systems',
+    title: 'Building Agentic Systems with HITL',
     date: '2026-01-26',
     quarter: 'Q1',
     year: 2026,
     tags: ['agentic systems', 'architecture'],
     projectSlugs: ['messaging-agent'],
     content: `
-# Building Agentic Systems
+# Building Agentic Systems with HITL
 
-Ai agents are llms with the autonomy to use tools to complete tasks. And agentic systems compose of the infrastructure (harness) that allows ai agents to interact with said tools and each other.
+Ai agents are llms with the autonomy to use tools to complete tasks. And agentic systems compose of the underlying infrastructure (harness) that allows ai agents to interact with said tools and each other.
 
-In my experience so far, I find that agentic systems are nothing without their respective harnesses. Consider Claude Code as an example, which demonstrates how a powerful harness
-allows Anthropic llms to be capable of much more.
+Thus, agentic systems are nothing without their harnesses. Consider Claude Code as an example, which demonstrates a powerful yet lightweight terminal-based agentic system which features anthropic's harness
+wrapped around their llms.
 
-## The Problem with Consistency
+So in this blog, I want to talk about some learning experiences I had when designing and constructing my own harness using Langgraph.
 
-From my work building a small-scale harness, I often came across problems with allowing an ai agent full autonomy with tools. 
+## Declaring Scope
 
-The problem was a lack of consistency: fully autonomous agents can be powerful with
-tasks that leave little to no ambiguity, but under those with ambiguity, they can make decisions that don't align with user intent. Even with tighter prompt tuning and tool description writing,
-ai agents can occasionally make decisions that defy common sense or previous established consistency.
+When I first started building my harness, my intended scope was small: no need for parallel agentic flows or complex orchestration, a decision driven by my desired usecases. 
+Yet even with this simplified preface, I often came across problems with agent execution when task ambiguity varied. 
 
-Yet, the solution to this isn't to remove autonomy entirely, but to allow agents to voice concerns and flag ambiguity when they spot it.
+## The Problem of Consistency
+
+The first problem was a lack of consistency: fully autonomous agents equipped with a toolbox can be powerful with tasks that leave little to no ambiguity, but under those with ambiguity, 
+a sole focus on task execution creates inconsistent results that may not align with user intent. 
+
+Even with tighter prompt tuning and tool description writing, ai agents can still make decisions that defy previous established consistency, given the large surface area of available requests.
+
+The solution to this isn't to remove the singular task execution focus entirely, but to allow agents to voice concerns and flag ambiguity when they spot it.
 
 ## Pre-emptive Clarification
 
-Before an agent takes action, it should assess whether it has enough information to complete the task and whether it understands the task itself. If there is any ambiguity,
-the agent can use a clarification tool that allows it to ask the end-user one or more clarification questions.
+Before an agent takes action, it should assess whether it has enough information to complete the task and whether it understands the task itself. If there is ambiguity that can distort the intent
+of the request, the agent can use a special clarification tool that allows it to ask the end-user one or more clarification questions.
 
 These clarification questions will be sent back to the end-user to be answered, and the state of the agentic system can be saved and restored to be resumed when answers arrive.
 
-## The Problem with Hand Holding
+## The Problem of Hand Holding
 
-At this point, we've given agents plenty of room for clarifying any ambiguity. However, another end of the spectrum is dealing with too much hand holding.
+At this point, we've given agents plenty of room for clarifying any ambiguity. However, another end of the spectrum is dealing with too much clarification, which leads to a feeling of hand holding.
 
-We should expect agents to be independent and agentic: they shouldn't ask clarification questions that can be inferred, retrieved via tools, or are simply common sense.
-Tighter prompt tuning and designating a reviewer agent can help here.
+By nature, we should expect agents to be independent and agentic: they shouldn't ask clarification questions that can be inferred from logic / common sense or retrieved via tools.
+Tighter prompt tuning and designating a reviewer agent can help here. However, implementing a separate reviewer agent incurs tradeoffs of extra latency cost.
 
 ## The Problem with Destructive Actions
 
-For fully autonomous agentic systems, another common problem is a lack of control: if we want to give ai agents more power to complete tasks, we
-should also give them access to tools that modify state, but these same tools have side effects as well.
+For fully autonomous agentic systems, another common problem is lack of control: if we want to give ai agents more power to complete tasks, we
+should give them access to tools that modify state, but these tools often create noticible side-effects or artifacts.
 
 Therefore, if agents are given access to tools that have destructive side-effects, there should be a way to monitor and green light their use. 
 
@@ -57,10 +63,11 @@ Similar to pre-emptive clarification, a summary of the tool call is sent back to
 
 ## Closing Thoughts
 
-I've learned a lot about building agentic systems this month. I think even though I've only built a small system, some of the ideas and principles highlighted here can be applied to
-larger systems. 
+I'm currently still experimenting with this project and hope to learn a lot more as I keep on building. I've already learned a lot about building agentic systems through this project 
+and I feel like some of the ideas and principles highlighted here can also be applied to larger ai systems.
 
-In larger systems that handle complex tasks, perhaps ambiguity of a task can also be completely eliminated early on by having an agent develop a concrete plan of action.
+Practically, I believe that a small harness is enough for most agentic tasks in your life. I'll continue to try and scale the design to see where the limit lies, but its good enough
+to customize for your own use as is.
     `,
   },
   {
@@ -124,8 +131,8 @@ Similarly, abstractions are created around third-party providers to allow for fu
 There is currently room for improvement in several domains for this project like logging and traceability, database abstractions, and documentation. Even looking back
 now, I see some areas where the design could potentially be improved. 
 
-However, this is probably my first time architecting and designing a system like this, so I'm happy with how it turned out. There were a lot of challenges and I learned 
-a ton as a result.
+However, this is my first time architecting and designing a system like this, so I'm happy with how it turned out. There were a lot of challenges and I learned 
+a ton along the way.
     `,
   },
 ]

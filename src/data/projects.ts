@@ -4,7 +4,7 @@ export const projects: Project[] = [
   {
     slug: 'messaging-agent',
     name: 'messaging-agent',
-    description: 'mini agentic harness/scaffold providing human confirmation + clarification and mcp integration',
+    description: 'mini agentic harness providing human confirmation + clarification and mcp integration',
     quarter: 'Q1',
     year: 2026,
     tags: ['agentic systems', 'langgraph', 'observability'],
@@ -12,15 +12,17 @@ export const projects: Project[] = [
     content: `
 # Overview
 
-This is a small LangGraph harness that supports basic agentic tasks, with additional human in the loop and observability features built in. 
-supports modular tool calling additions, and is ideal for simple yet generic tasks where tool calling order is not determined
+This is a small but powerful LangGraph harness that supports basic agentic tasks, with additional human in the loop and observability features built in. 
+it provides modular tool calling additions, and is ideal as a starting base for custom agentic systems
+
+It comes with a simple command line client, but you may build your own as well. Designed with the option to be spun up locally or over the cloud
 
 ## Features
 
-- **Pre-emptive Clarification**: automatically requests end-user clarification if a request is missing important context
+- **Pre-emptive Clarification**: automatically requests end-user clarification if an agent spots ambiguity with the request
 - **Side-effect Confirmation**: designate write/update tool calls that require end-user confirmation
 - **MCP and tool integration**: load and unload tools via MCP servers or directly construct custom tools 
-- **Observability**: pathing and model inputs logging with request trace ids
+- **Observability**: simple pathing and model inputs logging tagged with request trace ids
     `,
   },
   {
@@ -35,14 +37,17 @@ supports modular tool calling additions, and is ideal for simple yet generic tas
 # Overview
 
 This project presents a layered architecture for mcp servers that promotes single responsibility principles 
-with three configurable layers: an API layer, an OAuth layer, and a tool-call layer. allows for independent 
+across three decoupled layers: an API layer, an OAuth layer, and a tool-call layer. allows for independent 
 configuration, customization, and logging of each layer
+
+Ideal as a starting for developing custom MCP servers, as it provides extensible architecture with OAuth infra
+built in 
 
 ## Features
 
-- **Authorization Code Flow**: handles end-user authentication and provides a redirect URI callback endpoint
-- **Centralized OAuth Handling**: provides a centralized OAuth gateway for each tool call to initiate the Authorization Code Flow
-- **Modular OAuth Providers**: dependency injection of OAuth provider implementations into a centralized OAuth gateway
+- **Authorization Code Flow**: handles end-user authorization and provides a redirect URI callback setup
+- **Centralized OAuth Handling**: provides a centralized logic node for each tool call to initiate the Authorization Code Flow
+- **Modular OAuth Providers**: dependency injection of third-party OAuth provider implementations into a centralized OAuth gateway
     `,
   },
   {
