@@ -10,6 +10,7 @@ export function ProjectHeader({ project }: ProjectHeaderProps) {
     <section className="max-w-2xl mb-12">
       <Link
         to="/"
+        state={{ scrollTo: 'projects' }}
         className="inline-flex items-center gap-2 text-[10px] text-[var(--gray-600)] hover:text-[var(--gray-400)] transition-colors mb-8"
       >
         <span>&larr;</span>

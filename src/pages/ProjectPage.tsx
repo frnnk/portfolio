@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useParams, Navigate } from 'react-router-dom'
 import { MainLayout } from '../components/layout/MainLayout'
 import { ProjectHeader } from '../components/project/ProjectHeader'
@@ -6,6 +7,10 @@ import { getProjectBySlug, getAdjacentProjects } from '../data/projects'
 
 export function ProjectPage() {
   const { slug } = useParams<{ slug: string }>()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   if (!slug) {
     return <Navigate to="/" replace />

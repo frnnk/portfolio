@@ -154,3 +154,12 @@ body {
   background: white;
   color: black;
 }
+
+[id^="about"],
+[id^="projects"],
+[id^="quarter-"],
+[id^="blogs"],
+[id^="blog-quarter-"],
+[id^="contact"] {
+  scroll-margin-top: 80px;
+}
