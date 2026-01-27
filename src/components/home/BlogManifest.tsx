@@ -1,15 +1,15 @@
-import { getProjectsByQuarter } from '../../data/projects'
+import { getBlogsByQuarter } from '../../data/blogs'
 import { QuarterSection } from './QuarterSection'
-import { ProjectCard } from './ProjectCard'
+import { BlogCard } from './BlogCard'
 
-export function ProjectManifest() {
-  const quarterGroups = getProjectsByQuarter()
+export function BlogManifest() {
+  const quarterGroups = getBlogsByQuarter()
 
   return (
-    <section id="projects" className="max-w-3xl mb-16 relative z-20">
+    <section id="blogs" className="max-w-3xl mb-16 relative z-20">
       <div className="flex items-center gap-4 mb-10">
         <span className="text-[11px] text-[var(--gray-600)] font-bold tracking-[0.3em]">
-          projects
+          blogs
         </span>
         <div className="h-px w-24 bg-white/10" />
       </div>
@@ -19,10 +19,11 @@ export function ProjectManifest() {
             key={`${group.quarter}-${group.year}`}
             quarter={group.quarter}
             year={group.year}
-            items={group.projects}
-            renderItem={(project, isFirst) => (
-              <ProjectCard key={project.slug} project={project} isFirst={isFirst} />
+            items={group.blogs}
+            renderItem={(blog, isFirst) => (
+              <BlogCard key={blog.slug} blog={blog} isFirst={isFirst} />
             )}
+            idPrefix="blog-quarter"
             isFirstGroup={index === 0}
           />
         ))}

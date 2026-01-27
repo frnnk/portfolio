@@ -1,10 +1,10 @@
 import { useParams, Navigate } from 'react-router-dom'
 import { MainLayout } from '../components/layout/MainLayout'
-import { BlogHeader } from '../components/blog/BlogHeader'
-import { BlogContent } from '../components/blog/BlogContent'
+import { ProjectHeader } from '../components/project/ProjectHeader'
+import { ProjectContent } from '../components/project/ProjectContent'
 import { getProjectBySlug, getAdjacentProjects } from '../data/projects'
 
-export function BlogPostPage() {
+export function ProjectPage() {
   const { slug } = useParams<{ slug: string }>()
 
   if (!slug) {
@@ -21,8 +21,8 @@ export function BlogPostPage() {
 
   return (
     <MainLayout>
-      <BlogHeader project={project} />
-      <BlogContent content={project.content} prevProject={prev} nextProject={next} />
+      <ProjectHeader project={project} />
+      <ProjectContent content={project.content} prevProject={prev} nextProject={next} projectSlug={slug} />
     </MainLayout>
   )
 }

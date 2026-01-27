@@ -1,28 +1,32 @@
-import type { QuarterGroup } from '../../types'
-import { ProjectCard } from './ProjectCard'
+import type { ReactNode } from 'react'
 
-interface QuarterSectionProps {
-  group: QuarterGroup
+interface QuarterSectionProps<T> {
+  quarter: string
+  year: number
+  items: T[]
+  renderItem: (item: T, isFirst: boolean) => ReactNode
+  idPrefix?: string
   isFirstGroup: boolean
 }
 
-export function QuarterSection({ group, isFirstGroup }: QuarterSectionProps) {
+export function QuarterSection<T>({
+  quarter,
+  year,
+  items,
+  renderItem,
+  idPrefix = 'quarter',
+  isFirstGroup,
+}: QuarterSectionProps<T>) {
   return (
-    <div id={`quarter-${group.quarter.toLowerCase()}-${group.year}`} className="space-y-3">
+    <div id={`${idPrefix}-${quarter.toLowerCase()}-${year}`} className="space-y-3">
       <div className="flex items-center gap-3">
         <span className="text-[9px] font-bold text-[var(--gray-600)] tracking-widest">
-          {group.quarter} {group.year}
+          {quarter} {year}
         </span>
         <div className="h-px flex-1 bg-white/5" />
       </div>
       <div className="space-y-5">
-        {group.projects.map((project, index) => (
-          <ProjectCard
-            key={project.slug}
-            project={project}
-            isFirst={isFirstGroup && index === 0}
-          />
-        ))}
+        {items.map((item, index) => renderItem(item, isFirstGroup && index === 0))}
       </div>
     </div>
   )

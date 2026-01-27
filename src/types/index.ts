@@ -13,3 +13,20 @@ export interface QuarterGroup {
   year: number
   projects: Project[]
 }
+
+export interface Blog {
+  slug: string
+  title: string
+  date: string
+  quarter: string
+  year: number
+  tags: string[]
+  projectSlugs: string[]
+  content: string
+}
+
+export interface BlogQuarterGroup {
+  quarter: string
+  year: number
+  blogs: Blog[]
+}
