@@ -10,7 +10,7 @@ export function BlogPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
-  }, [])
+  }, [slug])
 
   if (!slug) {
     return <Navigate to="/" replace />
