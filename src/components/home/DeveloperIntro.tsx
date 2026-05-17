@@ -10,10 +10,11 @@ export function DeveloperIntro() {
       <div className="space-y-4 text-sm leading-relaxed font-light text-[var(--gray-400)]">
         <p>
           im a cs student @ mit interested in distributed and agentic systems. 
-          currently experimenting on agentic systems with MCP integration and human in the loop / tracability infra in place
+          currently working on agents that can play minigames and releasing cross-platform installation for a journaling app I made.
         </p>
         <p>
-          in my free time, i enjoy reading, running, and asking Claude random pieces of trivia
+          to satisfy my creative urges, i enjoy reading fiction, creative writing, and solving rougelike games with differing strategies.
+          for my active side, you'll find me at pickup basketball games, on a run, or bumping a volleyball around.
         </p>
       </div>
     </section>
