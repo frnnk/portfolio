@@ -130,7 +130,7 @@ export function getAdjacentProjects(slug: string): { prev: Project | null; next:
   }
 }
 
-export const spotlightSlugs: string[] = ['messaging-agent']
+export const spotlightSlugs: string[] = ['transient-thoughts', 'messaging-agent']
 
 export function getSpotlightProjects(): Project[] {
   return spotlightSlugs
