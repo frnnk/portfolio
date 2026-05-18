@@ -2,6 +2,28 @@ import type { Project, QuarterGroup } from '../types'
 
 export const projects: Project[] = [
   {
+    slug: 'transient-thoughts',
+    name: 'transient-thoughts',
+    description: 'unintrusive desktop journaling app to quickly unload tangent thoughts',
+    quarter: 'Q2',
+    year: 2026,
+    tags: ['installation', 'multithreading', 'locks', 'sqlite'],
+    github: `https://github.com/${import.meta.env.VITE_GITHUB_HANDLE}/transient-thoughts`,
+    content: `
+# Overview
+
+A small journaling app that periodically prompts for quick, transient thoughts: the mundane and tangential ideas that detract from your focus or otherwise
+would be forgotten. By seamlessly noting down these thoughts, you free your mind's resources to the current task at hand.
+
+## Features
+
+- **Periodically Prompts**: unintrusive toast notifications to periodically note down ideas or thoughts
+- **Quick Shortcut**: provides a quick shortcut to automatically bring up the text entry box to note down an idea or thought 
+- **Variable Settings**: declare quiet hours (time zone dependent), placement of the text entry box, and how often toast notifications pop up 
+- **Entry Viewing**: simple persistent store of all logged ideas and thoughts
+    `,
+  },
+  {
     slug: 'messaging-agent',
     name: 'messaging-agent',
     description: 'mini agentic harness providing human confirmation + clarification and mcp integration',
