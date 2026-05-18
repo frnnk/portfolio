@@ -156,6 +156,7 @@ body {
 }
 
 [id^="about"],
+[id^="spotlight"],
 [id^="projects"],
 [id^="quarter-"],
 [id^="blogs"],

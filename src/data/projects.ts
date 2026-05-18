@@ -107,3 +107,17 @@ export function getAdjacentProjects(slug: string): { prev: Project | null; next:
     next: index < projects.length - 1 ? projects[index + 1] : null,
   }
 }
+
+export const spotlightSlugs: string[] = ['messaging-agent']
+
+export function getSpotlightProjects(): Project[] {
+  return spotlightSlugs
+    .map((slug) => projects.find((p) => p.slug === slug))
+    .filter((p): p is Project => p !== undefined)
+}
+
+export function getOverviewSnippet(content: string): string {
+  const afterHeading = content.replace(/^\s*#\s+Overview\s*\n+/i, '')
+  const beforeNextHeading = afterHeading.split(/\n##\s/)[0]
+  return beforeNextHeading.trim()
+}
