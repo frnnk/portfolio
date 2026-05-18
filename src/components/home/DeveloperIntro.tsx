@@ -13,7 +13,7 @@ export function DeveloperIntro() {
           currently working on agents that can play minigames and releasing cross-platform installation for a journaling app I made.
         </p>
         <p>
-          to satisfy my creative urges, i enjoy reading fiction, creative writing, and solving rougelike games with differing strategies.
+          when I'm free, i enjoy reading, creative writing, and solving rougelike games with differing strategies.
           for my active side, you'll find me at pickup basketball, on a run, or bumping a volleyball around.
         </p>
       </div>
