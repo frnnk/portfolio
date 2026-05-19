@@ -2,6 +2,38 @@ import type { Blog, BlogQuarterGroup } from '../types'
 
 export const blogs: Blog[] = [
   {
+    slug: 'graduation-and-a-record-of-curiosities',
+    title: 'Graduation and a Record of Curiosities',
+    date: '2026-05-19',
+    quarter: 'Q2',
+    year: 2026,
+    tags: ['lifestyle'],
+    projectSlugs: [],
+    content: `
+# Graduation and a Record of Curiosities
+
+My graduation at MIT is near and that means I finally have free time to update this website. First, let me dust off my creative writing skills. 
+
+I first created this website to catalog my projects and improve my software development skills, serving as a way to motivate myself.
+I find that it's easy to fall into a lull of complacency where outside self-learning stalls, especially when learning new things is inherently uncomfortable.
+
+But it has blossomed into something much more meaningful. 
+
+As my time at mit enters its twilight chapter, I realize I have developed this annoying curiosity for the domain I'm entering, an insight that has slowly creeped up
+on me. It's a nagging itch that can't be scratched properly, an unquenchable thirst, a cry for new knowledge and understanding. 
+
+Yet, even I remain skeptical as to whether it will last a couple years down the line. Maybe that curiosity will transform
+into something else more grounded or even fade entirely. 
+
+Even so, this website now takes up the role of capturing this very special period of my life. It is a record of curiosities, a snapshot of passion, and most importantly, a 
+momento of youth.
+
+So, into the abyss I go.
+
+I look forward to what I will learn next.
+    `,
+  },
+  {
     slug: 'building-agentic-systems',
     title: 'Building Agentic Systems with HITL',
     date: '2026-01-26',
