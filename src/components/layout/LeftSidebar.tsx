@@ -61,7 +61,7 @@ export function LeftSidebar() {
               }}
             >
               <span className="text-[var(--gray-800)]">├─</span>
-              <span className="hover:text-[var(--highlight)]">projects/</span>
+              <span className="text-[var(--highlight)] hover:text-white">projects/</span>
             </div>
             <div
               id="nav-projects"
@@ -123,7 +123,7 @@ export function LeftSidebar() {
               }}
             >
               <span className="text-[var(--gray-800)]">├─</span>
-              <span className="hover:text-[var(--highlight)]">blogs/</span>
+              <span className="text-[var(--highlight)] hover:text-white">blogs/</span>
             </div>
             <div
               id="nav-blogs"
