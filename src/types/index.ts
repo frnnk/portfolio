@@ -7,6 +7,7 @@ export interface Project {
   tags: string[]
   content: string
   github?: string
+  pdf?: string
 }
 
 export interface QuarterGroup {
@@ -24,6 +25,7 @@ export interface Blog {
   tags: string[]
   projectSlugs: string[]
   content: string
+  pdf?: string
 }
 
 export interface BlogQuarterGroup {

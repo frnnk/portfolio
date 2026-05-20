@@ -31,6 +31,16 @@ export function ProjectHeader({ project }: ProjectHeaderProps) {
             [github]
           </a>
         )}
+        {project.pdf && (
+          <a
+            href={project.pdf}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10px] text-[var(--gray-600)] hover:text-[var(--highlight)] transition-colors"
+          >
+            [pdf]
+          </a>
+        )}
         <div className="h-px flex-1 bg-white/5" />
       </div>
 

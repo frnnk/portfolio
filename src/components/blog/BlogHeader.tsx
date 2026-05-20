@@ -35,6 +35,16 @@ export function BlogHeader({ blog }: BlogHeaderProps) {
         <h1 className="text-lg font-bold tracking-tighter text-[var(--highlight)]">
           {blog.title}
         </h1>
+        {blog.pdf && (
+          <a
+            href={blog.pdf}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10px] text-[var(--gray-600)] hover:text-[var(--highlight)] transition-colors"
+          >
+            [pdf]
+          </a>
+        )}
         <div className="h-px flex-1 bg-white/5" />
       </div>
 
