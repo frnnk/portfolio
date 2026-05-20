@@ -17,20 +17,20 @@ My graduation at MIT is near and that means I finally have free time to update t
 I first created this website to catalog my projects and improve my software development skills, serving as a way to motivate myself.
 I find that it's easy to fall into a lull of complacency where outside self-learning stalls, especially when learning new things is inherently uncomfortable.
 
-But it has blossomed into something much more meaningful. 
+But now it has blossomed into something more meaningful. 
 
-As my time at mit enters its twilight chapter, I realize I have developed this annoying curiosity for the domain I'm entering, an insight that has slowly creeped up
-on me. It's a nagging itch that can't be scratched properly, an unquenchable thirst, a cry for new knowledge and understanding. 
+As my time at mit enters its twilight chapter, I realize I have developed this annoying curiosity for the domain I'm entering, with it clinging to me like a sticky and durable web. 
+It's a nagging itch that can't be scratched properly, an unquenchable thirst, and a cry for new knowledge and understanding. 
 
-Yet, even I remain skeptical as to whether it will last a couple years down the line. Maybe that curiosity will transform
-into something else more grounded or even fade entirely. 
+Yet, even I remain skeptical as to whether this fervor will last. Maybe that curiosity will transform
+into something else more grounded or even fade out entirely. 
 
 Even so, this website now takes up the role of capturing this very special period of my life. It is a record of curiosities, a snapshot of passion, and most importantly, a 
-momento of youth.
+momento of my fresh eyes after graduation.
 
 So, into the abyss I go.
 
-I look forward to what I will learn next.
+I look forward to my next chapter.
     `,
   },
   {
