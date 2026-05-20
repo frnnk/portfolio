@@ -35,7 +35,7 @@ export function LeftSidebar() {
   }
 
   return (
-    <aside className="w-64 border-r border-white/5 p-8 hidden lg:block fixed top-[50px] left-0 h-[calc(100vh-50px)] overflow-y-auto">
+    <aside className="w-64 border-r border-white/5 p-8 hidden lg:block fixed top-[50px] left-0 h-[calc(100vh-50px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
       <div className="mb-10">
         <h2 className="text-[10px] font-bold mb-6 text-[var(--gray-600)] tracking-tighter">
           navigate
