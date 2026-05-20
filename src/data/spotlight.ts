@@ -19,7 +19,7 @@ export interface SpotlightItem {
 
 export const spotlightEntries: SpotlightEntry[] = [
   { kind: 'blog', slug: 'graduation-and-a-record-of-curiosities' },
-  { kind: 'project', slug: 'transient-thoughts' },
+  { kind: 'project', slug: 'ai-inference-kernels' },
 ]
 
 export function getSpotlightItems(): SpotlightItem[] {

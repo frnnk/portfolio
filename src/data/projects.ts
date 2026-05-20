@@ -2,6 +2,25 @@ import type { Project, QuarterGroup } from '../types'
 
 export const projects: Project[] = [
   {
+    slug: 'ai-inference-kernels',
+    name: 'ai-inference-kernels',
+    description: 'custom NKI kernels for running qwen3-30B-A3B inference',
+    quarter: 'Q2',
+    year: 2026,
+    tags: ['aws-trainium', 'kernel-programming'],
+    pdf: '/pdfs/model-inference.pdf',
+    content: `
+# Overview
+
+A series of custom kernels written in NKI, allowing them to interface with AWS Trainium hardware accelerators to speed up
+model inference.
+
+## Features
+
+A comprehensive list of features and optimizations is available in the attached pdf.
+    `,
+  },
+  {
     slug: 'transient-thoughts',
     name: 'transient-thoughts',
     description: 'unintrusive desktop journaling app to quickly unload tangent thoughts',
