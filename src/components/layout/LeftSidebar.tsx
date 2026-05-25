@@ -8,7 +8,10 @@ export function LeftSidebar() {
   const navigate = useNavigate()
   const projectQuarterGroups = getProjectsByQuarter()
   const blogQuarterGroups = getBlogsByQuarter()
-  const [openSections, setOpenSections] = useState({ projects: false, blogs: false })
+  const [openSections, setOpenSections] = useState(() => ({
+    projects: location.pathname.startsWith('/projects/'),
+    blogs: location.pathname.startsWith('/blogs/'),
+  }))
 
   useEffect(() => {
     if (location.pathname.startsWith('/projects/')) {
