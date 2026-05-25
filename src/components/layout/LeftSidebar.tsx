@@ -22,7 +22,7 @@ export function LeftSidebar() {
     if (location.pathname === '/') {
       document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
     } else {
-      navigate('/', { state: { scrollTo: id } })
+      navigate('/')
     }
   }
 
