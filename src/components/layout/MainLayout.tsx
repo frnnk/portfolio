@@ -1,3 +1,5 @@
+import { Children, isValidElement } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Header } from './Header'
 import { LeftSidebar } from './LeftSidebar'
 // import { RightSidebar } from './RightSidebar'
@@ -9,6 +11,8 @@ interface MainLayoutProps {
 }
 
 export function MainLayout({ children }: MainLayoutProps) {
+  const { pathname } = useLocation()
+
   return (
     <div className="bg-background-dark text-[var(--gray-400)] min-h-screen overflow-x-hidden">
       <HalftoneOverlay />
@@ -19,7 +23,21 @@ export function MainLayout({ children }: MainLayoutProps) {
         <LeftSidebar />
         <div className="w-64 hidden lg:block shrink-0" /> {/* Spacer for fixed sidebar */}
         <main className="flex-1 p-8 md:p-16 relative">
-          {children}
+          {/* key forces a remount on each route so the staggered reveal re-fires */}
+          <div key={pathname} className="contents">
+            {Children.map(children, (child, i) =>
+              isValidElement(child) ? (
+                <div
+                  className="motion-safe:animate-fade-in-up"
+                  style={{ animationDelay: `${i * 90}ms`, animationFillMode: 'both' }}
+                >
+                  {child}
+                </div>
+              ) : (
+                child
+              )
+            )}
+          </div>
         </main>
         {/* <RightSidebar /> */}
       </div>
