@@ -5,6 +5,7 @@ import { LeftSidebar } from './LeftSidebar'
 // import { RightSidebar } from './RightSidebar'
 import { Footer } from './Footer'
 import { HalftoneOverlay } from '../common/HalftoneOverlay'
+import { AsciiBackground } from '../common/AsciiBackground'
 
 interface MainLayoutProps {
   children: React.ReactNode
@@ -15,6 +16,7 @@ export function MainLayout({ children }: MainLayoutProps) {
 
   return (
     <div className="bg-background-dark text-[var(--gray-400)] min-h-screen overflow-x-hidden">
+      <AsciiBackground />
       <HalftoneOverlay />
 
       <Header />

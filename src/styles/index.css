@@ -107,6 +107,25 @@ body {
   background-size: 3px 3px;
 }
 
+.ascii-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none; /* clicks fall through to content */
+  overflow: hidden;
+}
+
+.ascii-pre {
+  margin: 0;
+  white-space: pre;
+  font-family: 'Ioskeley Mono', monospace;
+  font-size: 14px; /* larger glyph => fewer cells => calmer + cheaper */
+  line-height: 1.05;
+  color: #1c1c1c; /* dim gray between --gray-900 (#111) and --gray-800 (#333) */
+  opacity: 0.7; /* subtle-ambient knobs: color + opacity */
+  user-select: none;
+}
+
 .halftone-overlay {
   position: fixed;
   top: 0;
