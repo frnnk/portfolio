@@ -22,6 +22,7 @@ export interface Blog {
   date: string
   quarter: string
   year: number
+  categories: string[]
   tags: string[]
   projectSlugs: string[]
   content: string

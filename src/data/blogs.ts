@@ -7,6 +7,7 @@ export const blogs: Blog[] = [
     date: '2026-05-19',
     quarter: 'Q2',
     year: 2026,
+    categories: ['lifestyle', 'creative'],
     tags: ['lifestyle'],
     projectSlugs: [],
     content: `
@@ -39,6 +40,7 @@ I look forward to my next chapter.
     date: '2026-01-26',
     quarter: 'Q1',
     year: 2026,
+    categories: ['technical'],
     tags: ['agentic systems', 'architecture'],
     projectSlugs: ['messaging-agent'],
     content: `
@@ -108,6 +110,7 @@ to customize for your own use as is.
     date: '2026-01-11',
     quarter: 'Q1',
     year: 2026,
+    categories: ['technical'],
     tags: ['mcp tooling', 'oauth', 'architecture'],
     projectSlugs: ['mcp-server-framework'],
     content: `
