@@ -15,7 +15,7 @@ export function MainLayout({ children }: MainLayoutProps) {
   const { pathname } = useLocation()
 
   return (
-    <div className="bg-background-dark text-[var(--gray-400)] min-h-screen overflow-x-hidden">
+    <div className="bg-background-dark text-[var(--gray-400)] min-h-screen overflow-x-hidden pt-[50px]">
       <AsciiBackground />
       <HalftoneOverlay />
 
