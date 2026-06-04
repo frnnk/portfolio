@@ -18,7 +18,7 @@ My graduation at MIT is near and that means I finally have free time to update t
 I first created this website to catalog my projects and improve my software development skills, serving as a way to motivate myself.
 I find that it's easy to fall into a lull of complacency where outside self-learning stalls, especially when learning new things is inherently uncomfortable.
 
-But now it has blossomed into something more meaningful. 
+But now it has blossomed into something more meaningful.
 
 As my time at mit enters its twilight chapter, I realize I have developed this annoying curiosity for the domain I'm entering, with it clinging to me like a sticky and durable web. 
 It's a nagging itch that can't be scratched properly, an unquenchable thirst, and a cry for new knowledge and understanding. 

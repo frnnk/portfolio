@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
-import ReactMarkdown from 'react-markdown'
 import type { Blog } from '../../types'
+import { Markdown } from '../common/Markdown'
 
 interface BlogContentProps {
   content: string
@@ -11,20 +11,7 @@ interface BlogContentProps {
 export function BlogContent({ content, prevBlog, nextBlog }: BlogContentProps) {
   return (
     <section className="max-w-2xl">
-      <div className="prose prose-invert prose-sm max-w-none
-        prose-headings:text-[var(--gray-200)] prose-headings:font-bold prose-headings:tracking-wider
-        prose-h2:text-[11px] prose-h2:mb-4 prose-h2:mt-8
-        prose-h3:text-[10px] prose-h3:mb-3 prose-h3:mt-6
-        prose-p:text-[var(--gray-400)] prose-p:font-light prose-p:leading-relaxed prose-p:text-sm
-        prose-strong:text-[var(--highlight)] prose-strong:font-medium
-        prose-ul:space-y-2 prose-ul:my-4
-        prose-li:text-[var(--gray-400)] prose-li:font-light prose-li:text-sm prose-li:pl-4 prose-li:border-l prose-li:border-white/5
-        prose-code:text-[var(--highlight)] prose-code:bg-white/5 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-xs
-        prose-pre:bg-white/5 prose-pre:border prose-pre:border-white/10 prose-pre:rounded
-        prose-a:text-[var(--highlight)] prose-a:no-underline hover:prose-a:underline
-      ">
-        <ReactMarkdown>{content}</ReactMarkdown>
-      </div>
+      <Markdown content={content} />
 
       <div className="mt-16 pt-8 border-t border-white/5 flex justify-between text-[10px]">
         {prevBlog ? (
