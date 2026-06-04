@@ -44,7 +44,20 @@ const CONFIG = {
     startMargin: 0.18,
   },
   gapClouds: { density: 0.18, scale: 1.6, speed: 0.03, octaves: 3, hardness: 0.85 },
-  erase: { radiusCells: 12, durationSec: 0.9, jitter: 0.35, hardness: 0.6 },
+  erase: { radiusCells: 10, durationSec: 0.9, jitter: 0.35, hardness: 0.6 },
+  // Brightening halo that trails the cursor. Radius is intentionally larger
+  // than `erase.radiusCells` so the glow reads as a rim around the carved hole.
+  // `baseColor` matches the dim ambient (#1c1c1c); brightness lerps toward
+  // `brightColor` (the container's 0.7 opacity scales the final result down).
+  glow: {
+    radiusCells: 12,
+    attackSec: 0.35,
+    durationSec: 1.1,
+    hardness: 0.45,
+    levels: 8,
+    baseColor: [28, 28, 28],
+    brightColor: [215, 215, 215],
+  },
   fpsCap: 30,
 }
 
@@ -133,6 +146,28 @@ function hash3(a: number, b: number, c: number): number {
 const pick = <T,>(arr: T[], i: number): T => arr[i % arr.length]
 const randRange = (lo: number, hi: number) => lo + Math.random() * (hi - lo)
 
+// Escape only when needed — the bundled char sets contain no HTML specials, so
+// the test short-circuits for typical content while staying safe if WORD changes.
+const esc = (s: string): string =>
+  /[<>&]/.test(s) ? s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') : s
+
+// Precomputed glow color ramp (index 1..levels) lerping baseColor -> brightColor.
+// Quantizing brightness into discrete levels lets the renderer batch runs of
+// equal brightness into a single <span>.
+const GLOW_COLORS: string[] = (() => {
+  const { baseColor: b, brightColor: w, levels: L } = CONFIG.glow
+  const out = ['']
+  for (let i = 1; i <= L; i++) {
+    const g = i / L
+    out.push(
+      `rgb(${Math.round(b[0] + (w[0] - b[0]) * g)},` +
+        `${Math.round(b[1] + (w[1] - b[1]) * g)},` +
+        `${Math.round(b[2] + (w[2] - b[2]) * g)})`
+    )
+  }
+  return out
+})()
+
 // --- types ------------------------------------------------------------------
 
 interface Sample {
@@ -167,6 +202,9 @@ interface FieldState {
   cellH: number
   eraseBuf: Float32Array
   eraseActive: boolean
+  glowBuf: Float32Array
+  glowTarget: Float32Array
+  glowActive: boolean
   streaks: Streak[]
 }
 
@@ -187,6 +225,9 @@ export function AsciiBackground() {
     cellH: 14,
     eraseBuf: new Float32Array(1),
     eraseActive: false,
+    glowBuf: new Float32Array(1),
+    glowTarget: new Float32Array(1),
+    glowActive: false,
     streaks: [],
   })
 
@@ -231,6 +272,8 @@ export function AsciiBackground() {
     st.rows = rows
     st.sShort = Math.min(cols, rows)
     st.eraseBuf = new Float32Array(cols * rows)
+    st.glowBuf = new Float32Array(cols * rows)
+    st.glowTarget = new Float32Array(cols * rows)
   }, [measureCell])
 
   const streakDir = useCallback(() => {
@@ -356,24 +399,67 @@ export function AsciiBackground() {
     [pickChar]
   )
 
+  const emitRun = useCallback((run: string, lvl: number): string => {
+    if (lvl === 0) return esc(run)
+    return `<span style="color:${GLOW_COLORS[lvl]}">${esc(run)}</span>`
+  }, [])
+
   const draw = useCallback(
     (t: number) => {
       const pre = preRef.current
       const st = stateRef.current
       if (!pre) return
-      let text = ''
       const sample: Sample = { u: 0, v: 0, bandIndex: 0, tLine: 0, tGap: 0 }
+
+      // Fast path: no active glow → uniform dim color via textContent (cheapest,
+      // no HTML parse). This is the common idle case.
+      if (!st.glowActive) {
+        let text = ''
+        for (let y = 0; y < st.rows; y++) {
+          const rowFrac = st.rows <= 1 ? 0 : y / (st.rows - 1)
+          for (let x = 0; x < st.cols; x++) {
+            computeCell(x, y, t, rowFrac, sample)
+            text += cellChar(x, y, t, sample)
+          }
+          if (y < st.rows - 1) text += '\n'
+        }
+        pre.textContent = text
+        return
+      }
+
+      // Glow path: brightened cells become colored spans, run-length batched by
+      // quantized brightness level so the span count stays small.
+      const L = CONFIG.glow.levels
+      let html = ''
       for (let y = 0; y < st.rows; y++) {
         const rowFrac = st.rows <= 1 ? 0 : y / (st.rows - 1)
+        let run = ''
+        let runLvl = 0
         for (let x = 0; x < st.cols; x++) {
           computeCell(x, y, t, rowFrac, sample)
-          text += cellChar(x, y, t, sample)
+          const idx = y * st.cols + x
+          let ch: string
+          let lvl = 0
+          if (st.eraseBuf[idx] > 0) {
+            ch = ' '
+          } else {
+            ch = pickChar(x, y, t, sample)
+            const g = st.glowBuf[idx]
+            if (g > 0) lvl = Math.min(L, Math.max(1, Math.ceil(g * L)))
+          }
+          if (lvl !== runLvl) {
+            html += emitRun(run, runLvl)
+            run = ''
+            runLvl = lvl
+          }
+          run += ch
         }
-        if (y < st.rows - 1) text += '\n'
+        html += emitRun(run, runLvl)
+        if (y < st.rows - 1) html += '\n'
       }
-      pre.textContent = text
+      pre.innerHTML = html
     },
-    [computeCell, cellChar]
+    [computeCell, cellChar, pickChar, emitRun]
   )
 
   const frame = useCallback(
@@ -400,6 +486,31 @@ export function AsciiBackground() {
           }
         }
         st.eraseActive = active
+      }
+      if (st.glowActive) {
+        const step = dt > 0 ? dt : 0.016
+        // Target falls toward 0 over durationSec (release); displayed brightness
+        // rises toward target over attackSec (fade-in) and tracks it down on the
+        // way out, so a fresh cell ramps 0->1 instead of snapping on.
+        const attackRate = step / (CONFIG.glow.attackSec || step)
+        const releaseRate = step / (CONFIG.glow.durationSec || step)
+        let active = false
+        for (let i = 0; i < st.glowBuf.length; i++) {
+          let tgt = st.glowTarget[i] - releaseRate
+          if (tgt < 0) tgt = 0
+          st.glowTarget[i] = tgt
+          let b = st.glowBuf[i]
+          if (b < tgt) {
+            b += attackRate
+            if (b > tgt) b = tgt
+          } else if (b > tgt) {
+            b -= releaseRate
+            if (b < tgt) b = tgt
+          }
+          st.glowBuf[i] = b
+          if (b > 0 || tgt > 0) active = true
+        }
+        st.glowActive = active
       }
       draw(t)
       rafRef.current = requestAnimationFrame(frame)
@@ -442,6 +553,35 @@ export function AsciiBackground() {
           const idx = y * st.cols + x
           st.eraseBuf[idx] = Math.max(st.eraseBuf[idx], duration * strength)
           st.eraseActive = true
+        }
+      }
+    }
+
+    // Brightening halo: smooth radial falloff over a larger radius. The carved
+    // core renders as blank, so the visible glow reads as a rim around the hole.
+    const gRadius = CONFIG.glow.radiusCells | 0
+    const gHard = clamp(CONFIG.glow.hardness, 0, 1)
+    const gr2 = gRadius * gRadius
+    const gx0 = Math.max(0, cx - gRadius)
+    const gx1 = Math.min(st.cols - 1, cx + gRadius)
+    const gy0 = Math.max(0, cy - gRadius)
+    const gy1 = Math.min(st.rows - 1, cy + gRadius)
+    for (let y = gy0; y <= gy1; y++) {
+      for (let x = gx0; x <= gx1; x++) {
+        const dx = x - cx
+        const dy = y - cy
+        const dist2 = dx * dx + dy * dy
+        if (dist2 > gr2) continue
+        const falloff = Math.sqrt(dist2) / gRadius
+        const strength = Math.pow(1 - falloff, gHard * 2 + 0.3)
+        // Light organic variation so the rim isn't a perfect circle.
+        const roll = (hash3(x * 197 + y * 71, y * 389 + x * 53, cx * 11 + cy * 17) % 1e3) / 1e3
+        const s = strength * (0.85 + 0.15 * roll)
+        if (s > 0.02) {
+          const idx = y * st.cols + x
+          // Set the target brightness; frame() eases the displayed value up to it.
+          st.glowTarget[idx] = Math.max(st.glowTarget[idx], s)
+          st.glowActive = true
         }
       }
     }
