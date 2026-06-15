@@ -2,6 +2,30 @@ import type { Project, QuarterGroup } from '../types'
 
 export const projects: Project[] = [
   {
+    slug: 'youtube-summarizer',
+    name: 'youtube-summarizer',
+    description: 'command-line tool that turns a youtube link into a concise, configurable summary',
+    quarter: 'Q2',
+    year: 2026,
+    tags: ['langgraph', 'map-reduce', 'langchain', 'cli'],
+    github: `https://github.com/${import.meta.env.VITE_GITHUB_HANDLE}/youtube-summarizer`,
+    content: `
+# Overview
+
+A small command-line tool that turns a YouTube link into a concise summary: paste a URL, get the gist in your
+terminal without watching the whole thing. Short transcripts are summarized in a single pass; long ones are split
+into chunks, summarized in parallel via a LangGraph map-reduce graph, then stitched back into one coherent summary.
+
+## Features
+
+- **Flexible URL handling**: accepts any YouTube URL shape (watch, youtu.be, shorts, embed, live, share links) or a bare video id
+- **Map-reduce summarization**: parallel chunk summarization via a LangGraph state graph for long transcripts
+- **Model-agnostic backend**: swap LLM provider (anthropic, openai, google) with a single flag or setting
+- **Configurable output**: tune summary style (bullets or prose), length (short, medium, long), and caption language
+- **Persistent, layered config**: CLI flags over environment over .env over JSON config over defaults, with an interactive settings editor
+    `,
+  },
+  {
     slug: 'ai-inference-kernels',
     name: 'ai-inference-kernels',
     description: 'custom NKI kernels for running qwen3-30B-A3B inference',
