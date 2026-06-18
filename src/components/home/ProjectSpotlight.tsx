@@ -6,7 +6,7 @@ export function ProjectSpotlight() {
   if (items.length === 0) return null
 
   return (
-    <section id="spotlight" className="max-w-2xl 2xl:mx-auto mb-16 relative z-20">
+    <section id="spotlight" className="max-w-2xl 2xl:max-w-3xl 2xl:mx-auto mb-16 relative z-20">
       <div className="flex items-center gap-4 mb-6">
         <span className="text-fluid-xs text-[var(--gray-600)] font-bold tracking-[0.3em]">
           spotlight

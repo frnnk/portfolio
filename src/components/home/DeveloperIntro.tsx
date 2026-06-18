@@ -1,6 +1,6 @@
 export function DeveloperIntro() {
   return (
-    <section id="about" className="max-w-2xl 2xl:mx-auto mb-16">
+    <section id="about" className="max-w-2xl 2xl:max-w-3xl 2xl:mx-auto mb-16">
       <div className="flex items-center gap-4 mb-6">
         <h1 className="text-fluid-lg font-bold tracking-tighter text-[var(--highlight)]">
           frank liu.
