@@ -29,10 +29,10 @@ SyntaxHighlighter.alias('tsx', ['ts'])
 
 const PROSE_CLASSES = `prose prose-invert prose-sm max-w-none
   prose-headings:text-[var(--gray-200)] prose-headings:font-bold prose-headings:tracking-wider
-  prose-h1:text-[13px] prose-h1:mb-6 prose-h1:mt-0
-  prose-h2:text-[11px] prose-h2:mb-4 prose-h2:mt-8
-  prose-h3:text-[10px] prose-h3:mb-3 prose-h3:mt-6
-  prose-h4:text-[10px] prose-h4:mb-2 prose-h4:mt-4 prose-h4:text-[var(--gray-400)]
+  prose-h1:text-[20px] prose-h1:mb-6 prose-h1:mt-0
+  prose-h2:text-[16px] prose-h2:mb-4 prose-h2:mt-8
+  prose-h3:text-[13px] prose-h3:mb-3 prose-h3:mt-6
+  prose-h4:text-[11px] prose-h4:mb-2 prose-h4:mt-4 prose-h4:text-[var(--gray-400)]
   prose-p:text-[var(--gray-400)] prose-p:font-light prose-p:leading-relaxed prose-p:text-sm
   prose-em:text-[var(--gray-200)] prose-em:italic
   prose-strong:text-[var(--highlight)] prose-strong:font-medium

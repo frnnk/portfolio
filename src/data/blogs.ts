@@ -3,7 +3,7 @@ import type { Blog, BlogQuarterGroup } from '../types'
 export const blogs: Blog[] = [
   {
     slug: 'building-a-tray-app-for-journaling',
-    title: 'Building a Tray App for Journaling in Windows',
+    title: 'Deep Dive: Building a Tray App for Journaling',
     date: '2026-06-17',
     quarter: 'Q2',
     year: 2026,
@@ -11,7 +11,7 @@ export const blogs: Blog[] = [
     tags: ['python', 'desktop app', 'concurrency'],
     projectSlugs: ['transient-thoughts'],
     content: `
-# Building a tray app for journaling in windows
+# Deep Dive: Building a Tray App for Journaling
 
 ## Overview
 
