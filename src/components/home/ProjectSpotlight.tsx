@@ -6,9 +6,9 @@ export function ProjectSpotlight() {
   if (items.length === 0) return null
 
   return (
-    <section id="spotlight" className="max-w-2xl mb-16 relative z-20">
+    <section id="spotlight" className="max-w-2xl 2xl:mx-auto mb-16 relative z-20">
       <div className="flex items-center gap-4 mb-6">
-        <span className="text-[11px] text-[var(--gray-600)] font-bold tracking-[0.3em]">
+        <span className="text-fluid-xs text-[var(--gray-600)] font-bold tracking-[0.3em]">
           spotlight
         </span>
         <div className="h-px w-24 bg-white/10" />
@@ -22,19 +22,19 @@ export function ProjectSpotlight() {
           >
             <article className="bg-[var(--gray-900)] border border-white/5 rounded-sm px-6 py-5 hover:border-white/10 transition-colors">
               <div className="flex items-baseline gap-2 mb-1">
-                <h3 className="text-sm font-medium text-[var(--gray-200)] group-hover:text-white transition-colors">
+                <h3 className="text-fluid-base font-medium text-[var(--gray-200)] group-hover:text-white transition-colors">
                   {item.title}
                 </h3>
-                <span className="text-[10px] text-[var(--gray-600)] tracking-wider">
+                <span className="text-fluid-xs text-[var(--gray-600)] tracking-wider">
                   [{item.kind}]
                 </span>
               </div>
               {item.subtitle && (
-                <p className="text-[var(--gray-400)] leading-normal text-[11px] mb-3">
+                <p className="text-[var(--gray-400)] leading-normal text-fluid-xs mb-3">
                   {item.subtitle}
                 </p>
               )}
-              <p className="text-[var(--gray-600)] leading-relaxed text-[11px] line-clamp-3 whitespace-pre-line">
+              <p className="text-[var(--gray-600)] leading-relaxed text-fluid-xs line-clamp-3 whitespace-pre-line">
                 {item.snippet}
               </p>
             </article>

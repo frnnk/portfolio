@@ -21,18 +21,18 @@ export function BlogHeader({ blog }: BlogHeaderProps) {
     .filter(Boolean)
 
   return (
-    <section className="max-w-2xl mb-12">
+    <section className="max-w-2xl 2xl:max-w-3xl 2xl:mx-auto mb-12">
       <Link
         to="/"
         state={{ scrollTo: 'blogs' }}
-        className="inline-flex items-center gap-2 text-[10px] text-[var(--gray-600)] hover:text-[var(--gray-400)] transition-colors mb-8"
+        className="inline-flex items-center gap-2 text-fluid-xs text-[var(--gray-600)] hover:text-[var(--gray-400)] transition-colors mb-8"
       >
         <span>&larr;</span>
         <span>return to blogs</span>
       </Link>
 
       <div className="flex items-center gap-4 mb-4">
-        <h1 className="text-lg font-bold tracking-tighter text-[var(--highlight)]">
+        <h1 className="text-fluid-lg font-bold tracking-tighter text-[var(--highlight)]">
           {blog.title}
         </h1>
         {blog.pdf && (
@@ -40,7 +40,7 @@ export function BlogHeader({ blog }: BlogHeaderProps) {
             href={blog.pdf}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[10px] text-[var(--gray-600)] hover:text-[var(--highlight)] transition-colors"
+            className="text-fluid-xs text-[var(--gray-600)] hover:text-[var(--highlight)] transition-colors"
           >
             [pdf]
           </a>
@@ -49,14 +49,14 @@ export function BlogHeader({ blog }: BlogHeaderProps) {
       </div>
 
       <div className="flex items-center gap-4 mb-6">
-        <span className="text-[8px] font-bold text-[var(--gray-800)] tracking-widest">
+        <span className="text-fluid-2xs font-bold text-[var(--gray-800)] tracking-widest">
           {formatDate(blog.date)}
         </span>
         <div className="flex gap-2">
           {blog.tags.map((tag) => (
             <span
               key={tag}
-              className="text-[8px] px-2 py-0.5 border border-white/10 text-[var(--gray-600)]"
+              className="text-fluid-2xs px-2 py-0.5 border border-white/10 text-[var(--gray-600)]"
             >
               {tag}
             </span>
@@ -65,7 +65,7 @@ export function BlogHeader({ blog }: BlogHeaderProps) {
       </div>
 
       {linkedProjects.length > 0 && (
-        <div className="flex items-center gap-3 text-[10px]">
+        <div className="flex items-center gap-3 text-fluid-xs">
           <span className="text-[var(--gray-800)]">related projects:</span>
           <div className="flex gap-2">
             {linkedProjects.map((project) => (

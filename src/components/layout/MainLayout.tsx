@@ -21,10 +21,10 @@ export function MainLayout({ children }: MainLayoutProps) {
 
       <Header />
 
-      <div className="relative z-10 max-w-7xl mx-auto flex min-h-[calc(100vh-50px)]">
+      <div className="relative z-10 max-w-7xl 2xl:max-w-[110rem] mx-auto flex min-h-[calc(100vh-50px)]">
         <LeftSidebar />
         <div className="w-64 hidden lg:block shrink-0" /> {/* Spacer for fixed sidebar */}
-        <main className="flex-1 p-8 md:p-16 relative">
+        <main className="flex-1 min-w-0 p-4 sm:p-8 md:p-16 relative">
           {/* key forces a remount on each route so the staggered reveal re-fires */}
           <div key={pathname} className="contents">
             {Children.map(children, (child, i) =>

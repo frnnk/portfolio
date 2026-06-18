@@ -29,18 +29,18 @@ SyntaxHighlighter.alias('tsx', ['ts'])
 
 const PROSE_CLASSES = `prose prose-invert prose-sm max-w-none
   prose-headings:text-[var(--gray-200)] prose-headings:font-bold prose-headings:tracking-wider
-  prose-h1:text-[20px] prose-h1:mb-6 prose-h1:mt-0
-  prose-h2:text-[16px] prose-h2:mb-4 prose-h2:mt-8
-  prose-h3:text-[13px] prose-h3:mb-3 prose-h3:mt-6
-  prose-h4:text-[11px] prose-h4:mb-2 prose-h4:mt-4 prose-h4:text-[var(--gray-400)]
-  prose-p:text-[var(--gray-400)] prose-p:font-light prose-p:leading-relaxed prose-p:text-sm
+  prose-h1:text-fluid-h1 prose-h1:mb-6 prose-h1:mt-0
+  prose-h2:text-fluid-h2 prose-h2:mb-4 prose-h2:mt-8
+  prose-h3:text-fluid-h3 prose-h3:mb-3 prose-h3:mt-6
+  prose-h4:text-fluid-h4 prose-h4:mb-2 prose-h4:mt-4 prose-h4:text-[var(--gray-400)]
+  prose-p:text-[var(--gray-400)] prose-p:font-light prose-p:leading-relaxed prose-p:text-fluid-base prose-p:[overflow-wrap:break-word]
   prose-em:text-[var(--gray-200)] prose-em:italic
   prose-strong:text-[var(--highlight)] prose-strong:font-medium
   prose-ul:space-y-2 prose-ul:my-4
-  prose-li:text-[var(--gray-400)] prose-li:font-light prose-li:text-sm prose-li:pl-4 prose-li:border-l prose-li:border-white/5
-  prose-code:text-[var(--highlight)] prose-code:bg-white/[0.12] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:text-xs prose-code:font-normal prose-code:[text-transform:none] prose-code:before:content-[''] prose-code:after:content-['']
+  prose-li:text-[var(--gray-400)] prose-li:font-light prose-li:text-fluid-base prose-li:pl-4 prose-li:border-l prose-li:border-white/5
+  prose-code:text-[var(--highlight)] prose-code:bg-white/[0.12] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:text-fluid-sm prose-code:font-normal prose-code:[text-transform:none] prose-code:break-words prose-code:before:content-[''] prose-code:after:content-['']
   prose-pre:rounded-md
-  prose-a:text-[var(--highlight)] prose-a:no-underline hover:prose-a:underline`
+  prose-a:text-[var(--highlight)] prose-a:no-underline prose-a:break-words hover:prose-a:underline`
 
 // Minimal theme: code stays a flat, readable gray (--gray-200) with no
 // per-token highlighting — only keywords (for/while/if/elif/break/not/self/…)
@@ -51,7 +51,7 @@ const PROSE_CLASSES = `prose prose-invert prose-sm max-w-none
 const base: CSSProperties = {
   color: '#cccccc',
   fontFamily: "'Ioskeley Mono', monospace",
-  fontSize: '12px',
+  fontSize: 'clamp(12px, 0.31vw + 8px, 16px)',
   lineHeight: 1.6,
   textTransform: 'none',
   fontWeight: 300,
@@ -102,7 +102,7 @@ export function Markdown({ content }: MarkdownProps) {
                       background: 'transparent',
                       padding: 0,
                       borderRadius: 0,
-                      fontSize: '12px',
+                      fontSize: 'clamp(12px, 0.31vw + 8px, 16px)',
                       fontWeight: 300,
                       color: '#cccccc',
                     },

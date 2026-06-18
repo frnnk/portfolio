@@ -20,7 +20,7 @@ export function QuarterSection<T>({
   return (
     <div id={`${idPrefix}-${quarter.toLowerCase()}-${year}`} className="space-y-3">
       <div className="flex items-center gap-3">
-        <span className="text-[9px] font-bold text-[var(--gray-600)] tracking-widest">
+        <span className="text-fluid-2xs font-bold text-[var(--gray-600)] tracking-widest">
           {quarter} {year}
         </span>
         <div className="h-px flex-1 bg-white/5" />

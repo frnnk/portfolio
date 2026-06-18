@@ -14,7 +14,7 @@ export function ProjectContent({ content, prevProject, nextProject, projectSlug 
   const relatedBlogs = projectSlug ? getBlogsByProjectSlug(projectSlug) : []
 
   return (
-    <section className="max-w-2xl">
+    <section className="max-w-2xl 2xl:max-w-3xl 2xl:mx-auto">
       <Markdown content={content} />
 
       {relatedBlogs.length > 0 && (

@@ -15,10 +15,10 @@ export function ProjectCard({ project, isFirst }: ProjectCardProps) {
             isFirst ? 'bg-[var(--gray-600)]' : 'bg-[var(--gray-800)]'
           }`}
         />
-        <h3 className="text-xs font-medium tracking-normal text-[var(--gray-200)] group-hover:text-white transition-colors mb-0.5">
+        <h3 className="text-fluid-sm font-medium tracking-normal text-[var(--gray-200)] group-hover:text-white transition-colors mb-0.5">
           {project.name}
         </h3>
-        <p className="text-[var(--gray-600)] max-w-lg leading-normal text-[11px]">
+        <p className="text-[var(--gray-600)] max-w-lg leading-normal text-fluid-xs">
           {project.description}
         </p>
       </article>

@@ -6,9 +6,9 @@ export function BlogManifest() {
   const quarterGroups = getBlogsByQuarter()
 
   return (
-    <section id="blogs" className="max-w-3xl mb-16 relative z-20">
+    <section id="blogs" className="max-w-3xl 2xl:mx-auto mb-16 relative z-20">
       <div className="flex items-center gap-4 mb-10">
-        <span className="text-[11px] text-[var(--gray-600)] font-bold tracking-[0.3em]">
+        <span className="text-fluid-xs text-[var(--gray-600)] font-bold tracking-[0.3em]">
           blogs
         </span>
         <div className="h-px w-24 bg-white/10" />

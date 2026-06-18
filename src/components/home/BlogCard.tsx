@@ -25,16 +25,16 @@ export function BlogCard({ blog, isFirst }: BlogCardProps) {
           }`}
         />
         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 mb-0.5">
-          <h3 className="text-xs font-medium tracking-normal text-[var(--gray-200)] group-hover:text-white transition-colors">
+          <h3 className="text-fluid-sm font-medium tracking-normal text-[var(--gray-200)] group-hover:text-white transition-colors">
             {blog.title}
           </h3>
           {blog.categories.map((category) => (
-            <span key={category} className="text-[10px] text-[var(--gray-600)] tracking-wider">
+            <span key={category} className="text-fluid-xs text-[var(--gray-600)] tracking-wider">
               [{category}]
             </span>
           ))}
         </div>
-        <p className="text-[var(--gray-600)] max-w-lg leading-normal text-[11px]">
+        <p className="text-[var(--gray-600)] max-w-lg leading-normal text-fluid-xs">
           {formatDate(blog.date)}
         </p>
       </article>
