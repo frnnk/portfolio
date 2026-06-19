@@ -372,6 +372,7 @@ I look forward to my next chapter.
     slug: 'building-agentic-systems',
     title: 'Building Agentic Systems with HITL',
     date: '2026-01-26',
+    updated: '2026-06-20',
     quarter: 'Q1',
     year: 2026,
     categories: ['technical'],

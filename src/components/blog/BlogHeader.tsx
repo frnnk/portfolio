@@ -49,9 +49,14 @@ export function BlogHeader({ blog }: BlogHeaderProps) {
       </div>
 
       <div className="flex items-center gap-4 mb-6">
-        <span className="text-fluid-2xs font-bold text-[var(--gray-800)] tracking-widest">
+        <span className="text-fluid-2xs font-bold text-[var(--gray-400)] tracking-widest">
           {formatDate(blog.date)}
         </span>
+        {blog.updated && (
+          <span className="text-fluid-2xs italic text-[var(--gray-400)] tracking-widest">
+            edited {formatDate(blog.updated)}
+          </span>
+        )}
         <div className="flex gap-2">
           {blog.tags.map((tag) => (
             <span
@@ -66,7 +71,7 @@ export function BlogHeader({ blog }: BlogHeaderProps) {
 
       {linkedProjects.length > 0 && (
         <div className="flex items-center gap-3 text-fluid-xs">
-          <span className="text-[var(--gray-800)]">related projects:</span>
+          <span className="text-[var(--gray-400)]">related projects:</span>
           <div className="flex gap-2">
             {linkedProjects.map((project) => (
               <Link

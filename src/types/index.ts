@@ -20,6 +20,7 @@ export interface Blog {
   slug: string
   title: string
   date: string
+  updated?: string
   quarter: string
   year: number
   categories: string[]

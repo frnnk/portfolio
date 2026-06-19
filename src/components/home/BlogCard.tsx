@@ -36,6 +36,11 @@ export function BlogCard({ blog, isFirst }: BlogCardProps) {
         </div>
         <p className="text-[var(--gray-600)] max-w-lg leading-normal text-fluid-xs">
           {formatDate(blog.date)}
+          {blog.updated && (
+            <span className="italic text-[var(--gray-600)]">
+              {' '}&middot; edited {formatDate(blog.updated)}
+            </span>
+          )}
         </p>
       </article>
     </Link>
