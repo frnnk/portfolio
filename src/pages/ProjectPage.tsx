@@ -27,7 +27,13 @@ export function ProjectPage() {
   return (
     <MainLayout>
       <ProjectHeader project={project} />
-      <ProjectContent content={project.content} prevProject={prev} nextProject={next} projectSlug={slug} />
+      <ProjectContent
+        content={project.content}
+        architecture={project.architecture}
+        prevProject={prev}
+        nextProject={next}
+        projectSlug={slug}
+      />
     </MainLayout>
   )
 }

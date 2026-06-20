@@ -8,6 +8,7 @@ export interface Project {
   content: string
   github?: string
   pdf?: string
+  architecture?: string
 }
 
 export interface QuarterGroup {

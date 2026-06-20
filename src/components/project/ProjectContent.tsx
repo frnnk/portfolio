@@ -2,20 +2,29 @@ import { Link } from 'react-router-dom'
 import type { Project } from '../../types'
 import { getBlogsByProjectSlug } from '../../data/blogs'
 import { Markdown } from '../common/Markdown'
+import { Mermaid } from '../common/Mermaid'
 
 interface ProjectContentProps {
   content: string
+  architecture?: string
   prevProject: Project | null
   nextProject: Project | null
   projectSlug?: string
 }
 
-export function ProjectContent({ content, prevProject, nextProject, projectSlug }: ProjectContentProps) {
+export function ProjectContent({ content, architecture, prevProject, nextProject, projectSlug }: ProjectContentProps) {
   const relatedBlogs = projectSlug ? getBlogsByProjectSlug(projectSlug) : []
 
   return (
     <section className="max-w-2xl 2xl:max-w-3xl 2xl:mx-auto">
       <Markdown content={content} />
+
+      {architecture && (
+        <>
+          <Markdown content={'## Architecture'} />
+          <Mermaid chart={architecture} />
+        </>
+      )}
 
       {relatedBlogs.length > 0 && (
         <div className="mt-12 pt-8 border-t border-white/5">

@@ -74,10 +74,34 @@ A small journaling app that periodically prompts for quick, transient thoughts: 
     year: 2026,
     tags: ['agentic systems', 'langgraph', 'observability'],
     github: `https://github.com/${import.meta.env.VITE_GITHUB_HANDLE}/msg-agent`,
+    architecture: `
+flowchart TD
+    START((START)) --> policy_router
+    policy_router --> task_executor
+
+    task_executor -->|clarification needed| human_clarification
+    task_executor -->|HITL tools| human_confirmation
+    task_executor -->|tool calls| use_tools
+    task_executor -->|no tool calls| END
+
+    human_clarification[["human_clarification<br/>(interrupt)"]]
+    human_clarification -->|HITL remaining| human_confirmation
+    human_clarification -->|tools remaining| use_tools
+    human_clarification -->|no remaining| task_executor
+
+    human_confirmation[["human_confirmation<br/>(interrupt)"]]
+    human_confirmation -->|approved| use_tools
+    human_confirmation -->|all rejected| task_executor
+
+    use_tools -->|OAuth URL| oauth_needed
+    use_tools -->|continue| task_executor
+
+    oauth_needed --> END((END))
+    `,
     content: `
 # Overview
 
-This is a small but powerful LangGraph harness that supports basic agentic tasks, with additional human in the loop and observability features built in. 
+This is a small but powerful LangGraph harness that supports basic agentic tasks, with additional human in the loop and observability features built in.
 it provides modular tool calling additions, and is ideal as a starting base for custom agentic systems
 
 It comes with a simple command line client, but you may build your own as well. Designed with the option to be spun up locally or over the cloud
