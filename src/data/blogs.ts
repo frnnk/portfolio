@@ -326,7 +326,7 @@ As a result, the app quietly stops starting, with no error to explain why. So be
 
 With both halves in place, deployment is now complete. We now have a journaling tray app that automatically launches with every startup.
 
-## Closing
+## Closing Thoughts
 
 During this project I often decided to go the simplest route and tried to see where that would take me. The four-module decoupling architecture, with the orchestrator owning every callback, was something I've already experimented with in previous projects. Then, after the basic app was fully functional, I added on more features that built on top of that established architecture.
 
@@ -369,8 +369,8 @@ I look forward to my next chapter.
     `,
   },
   {
-    slug: 'building-agentic-systems',
-    title: 'Building Agentic Systems with HITL',
+    slug: 'building-small-agentic-systems',
+    title: 'Building Small Agentic Systems with HITL',
     date: '2026-01-26',
     updated: '2026-06-20',
     quarter: 'Q1',
@@ -379,64 +379,149 @@ I look forward to my next chapter.
     tags: ['agentic systems', 'architecture'],
     projectSlugs: ['messaging-agent'],
     content: `
-# Building Agentic Systems with HITL
+# Building Small Agentic Systems with HITL
 
-Ai agents are llms with the autonomy to use tools to complete tasks. And agentic systems compose of the underlying infrastructure (harness) that allows ai agents to interact with said tools and each other.
+## Overview
 
-Thus, agentic systems are nothing without their harnesses. Consider Claude Code as an example, which demonstrates a powerful yet lightweight terminal-based agentic system which features anthropic's harness
-wrapped around their llms.
+When I first heard about AI agents, the term was more like a buzz word. I knew it was relevant, I knew it had something to do with large language models (LLMs), 
+but I didn't know how it worked at all. With this in mind, I want to talk more about my initial learning experiences building AI agents in this blog, 
+in the form of designing and constructing a lightweight but powerful Langgraph harness for cheap models. 
 
-So in this blog, I want to talk about some learning experiences I had when designing and constructing my own harness using Langgraph.
+## Harnesses
 
-## Declaring Scope
+> But first, what are AI agents and harnesses?
 
-When I first started building my harness, my intended scope was small: no need for parallel agentic flows or complex orchestration, a decision driven by my desired usecases. 
-Yet even with this simplified preface, I often came across problems with agent execution when task ambiguity varied. 
+Ai agents are llms (like Claude, GPT, Gemini) paired with the ability to use tools that can execute tasks. On the other hand, **harnesses** compose of the underlying 
+code infrastructure that allow llms to interact with these tools and other llms.
 
-## The Problem of Consistency
+In other words, *AI agents are workers with specific goals, while harnesses enable agents to perform specific actions that reach these goals*. 
+Consider **Claude Code** as an example: it's a powerful yet lightweight harness that allows anthropic's claude models to act as an agent; by allowing the model to use 
+numerous built-in tools, it becomes a worker and completes tasks on your behalf.
 
-The first problem was a lack of consistency: fully autonomous agents equipped with a toolbox can be powerful with tasks that leave little to no ambiguity, but under those with ambiguity, 
-a sole focus on task execution creates inconsistent results that may not align with user intent. 
+## Tools
 
-Even with tighter prompt tuning and tool description writing, ai agents can still make decisions that defy previous established consistency, given the large surface area of available requests.
+> Another term that's been thrown around: **tools**. What are they?
 
-The solution to this isn't to remove the singular task execution focus entirely, but to allow agents to voice concerns and flag ambiguity when they spot it.
+Tools are functions written with code. To see these tools, an llm's prompt is injected with a list of key attributes: *the function name, its description and when to use it, 
+as well as the signature of its arguments and the value it returns*.
 
-## Pre-emptive Clarification
+The llm never receives the function itself, only a text rendering of it. A potential \`search_files\` function in our harness reaches the model as three plain lines of text 
+within the prompt:
+
+\`\`\`python
+def search_files(query: str) -> list[str]:  # the real function, lives in the harness
+    """Find files in the project whose contents match the query."""
+    ...
+
+# the llm only ever sees this text rendering of the tool, never the function
+tool_prompt = """
+name: search_files
+description: Find files in the project whose contents match the query.
+signature: search_files(query: str) -> list[str]
+"""
+
+# the tool text is injected straight into the prompt the model receives
+prompt = system_instructions + tool_prompt + user_message
+\`\`\`
+
+The model reads \`prompt\` from top to bottom, with \`tool_prompt\` sitting inside of it like any other instruction. When it decides the tool is needed, 
+it cannot run \`search_files\` on its own; instead, it replies with a structured **tool call** that names the tool and fills in its arguments. 
+
+The harness then *intercepts that call*, runs the real function with the arguments, and feeds the return value back into the prompt as the next message.
+
+
+## Handling Ambiguity
+
+Now that we have some context on this project, let's get back to designing our harness.
+
+Starting out, there are some priorities for our harness that we want to design for. We want to construct a
+*lightweight but powerful harness, that allows cheaper models to accomplish simple and structured tasks efficiently*. This implies that our
+intended scope would be small: no need for parallel agents or complex orchestration, but rather an emphasis on solving problems
+that arise with using cheaper models.
+
+Choosing cheaper models require model agnosticism but that can be solved by building the harness using **Langgraph**, a model-agnostic framework
+for building agents. The harder problem in a sense is *making cheaper models less dumb*. Even with a simplified task surface, problems with agent execution 
+arose when task ambiguity varied. 
+
+### The Problem of Consistency
+
+The first problem was a *lack of consistency*: fully autonomous agents (even cheap models) equipped with a toolbox can be powerful with tasks that are explicitly instructed, but under those with 
+even a little ambiguity, a sole focus on task execution creates inconsistent results that may not align with user intent. 
+
+With tighter prompt tuning and tool description writing, this risk can be mitigated but cheaper models still lack in the ability to *predict user intent* compared
+to frontier models. To remedy this, we instead allow our agent to voice concerns and flag ambiguity when they spot it.
+
+### Pre-emptive Clarification
 
 Before an agent takes action, it should assess whether it has enough information to complete the task and whether it understands the task itself. If there is ambiguity that can distort the intent
-of the request, the agent can use a special clarification tool that allows it to ask the end-user one or more clarification questions.
+of the request, the agent uses a special **clarification tool** that asks the end-user one or more clarification questions.
 
-These clarification questions will be sent back to the end-user to be answered, and the state of the agentic system can be saved and restored to be resumed when answers arrive.
+\`\`\`python
+def ask_clarification(questions: list[str]) -> list[str]:
+    """
+    Ask the end-user one or more clarification questions.
+    """
+    # saves state and halts the graph until the user replies
+    answers = interrupt(questions) 
+    return answers
+\`\`\`
 
-## The Problem of Hand Holding
+These clarification questions will be sent back to the end-user to be answered, and the state of the harness can be saved and then restored when answers arrive.
 
-At this point, we've given agents plenty of room for clarifying any ambiguity. However, another end of the spectrum is dealing with too much clarification, which leads to a feeling of hand holding.
+### The Problem of Hand Holding
 
-By nature, we should expect agents to be independent and agentic: they shouldn't ask clarification questions that can be inferred from logic / common sense or retrieved via tools.
-Tighter prompt tuning and designating a reviewer agent can help here. However, implementing a separate reviewer agent incurs tradeoffs of extra latency cost.
+> Naturally another question comes up. Can an agent ask for too much clarification?
 
-## The Problem with Destructive Actions
+At this point, we've given agents plenty of room for clarifying any ambiguity. However, another end of the spectrum is dealing with too much clarification, which leads to a feeling of **hand holding**.
 
-For fully autonomous agentic systems, another common problem is lack of control: if we want to give ai agents more power to complete tasks, we
-should give them access to tools that modify state, but these tools often create noticible side-effects or artifacts.
+By nature, we should expect agents to be independent and agentic: *they shouldn't ask clarification questions that can be inferred from logic, common sense, or retrieved via tools*.
+This expectation becomes harder to manage when we deal with cheaper models, but tighter prompt tuning and designating a reviewer agent helps out significantly. However, at the end of the day, this problem is
+a lot better to have than agents being misaligned to user intent and we are okay with dealing with this trade-off.
+
+## Handling Side Effects
+
+Up to this point, our focus has been on making sure an agent understands *what it should do* before acting. 
+
+But getting the intent right is only half of the battle. 
+The moment an agent acts on that intent, the concern naturally *shifts from understanding to responsibility*: not whether it read the task correctly,
+but whether its actions leave behind any consequences once they run. For cheaper agents in our use case, this issue is more pronounced since user misalignment is
+even easier.
+
+### The Problem with Destructive Actions
+
+> What happens once we hand an agent tools that change state and can be destructive?
+
+For harness efficiency, a common dilemma is *lack of control*: if we want to give agents more power to complete tasks, we
+need to give them access to tools that modify state, but these tools often create noticible side-effects or artifacts.
 
 Therefore, if agents are given access to tools that have destructive side-effects, there should be a way to monitor and green light their use. 
 
-## Human-in-the-Loop Confirmation
+### Human-in-the-Loop Confirmation
 
-We can install strategic checkpoints for confirmation when actions with side effects (writes, updates, deletes) are decided on by an agent. These checkpoints will require explicit user 
+We can install *strategic checkpoints for confirmation* when actions with side effects (writes, updates, deletes) are decided on by an agent. These checkpoints will require explicit user 
 confirmation and adds an additional safety layer without sacrificing the agent's ability to reason and plan.
 
-Similar to pre-emptive clarification, a summary of the tool call is sent back to the end-user for confirmation, and requires the state of the graph to be saved and restored.
+\`\`\`python
+def confirm(summary: str) -> bool:
+    """
+    Send a tool-call summary to the end-user and wait for approval.
+    """
+    # saves graph state and halts until the user decides
+    approved = interrupt(summary)
+    return approved
+\`\`\`
+
+Similar to pre-emptive clarification, a summary of the tool call is sent back to the end-user for confirmation, and requires harness state to be saved and then restored to resume the conversation.
 
 ## Closing Thoughts
 
-I'm currently still experimenting with this project and hope to learn a lot more as I keep on building. I've already learned a lot about building agentic systems through this project 
-and I feel like some of the ideas and principles highlighted here can also be applied to larger ai systems.
+Practically, I believe that *a small harness is enough for most everyday tasks*, as these tasks are often not complex enough 
+to warrant the use of frontier models (and API credits are already expensive enough). Through a more robust harness, we can 
+stick to cheaper models to perform these tasks effectively and efficiently.
 
-Practically, I believe that a small harness is enough for most agentic tasks in your life. I'll continue to try and scale the design to see where the limit lies, but its good enough
-to customize for your own use as is.
+In the future, I'll continue to try and scale the design to see where the limit lies, but its good enough to customize for your own use as is.
+
+Feel free to take a look at the source code on my Github; it's still very experimental but I am excited to learn a lot more as I keep building!
     `,
   },
   {
