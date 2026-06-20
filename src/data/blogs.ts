@@ -457,13 +457,27 @@ Before an agent takes action, it should assess whether it has enough information
 of the request, the agent uses a special **clarification tool** that asks the end-user one or more clarification questions.
 
 \`\`\`python
-def ask_clarification(questions: list[str]) -> list[str]:
+@tool
+def request_clarification(question: str, context: str = "") -> str:
+    """Request clarification from the user when information is ambiguous."""
+    return "Clarification pending"
+
+
+async def human_clarification(state: RequestState):
     """
-    Ask the end-user one or more clarification questions.
+    Human-in-the-loop clarification node. When a model uses the 
+    request_clarification tool, the harness state is routed to this node.
+
+    Interrupts execution to get user clarification when information is ambiguous.
+    Handles remaining tool calls after clarification is received.
     """
-    # saves state and halts the graph until the user replies
-    answers = interrupt(questions) 
-    return answers
+    pending = state['pending_action']
+    clarifications = pending['clarifications']
+
+    # interrupt and wait for user responses
+    result = interrupt(None)
+    responses = result.get('responses', [])
+    ...
 \`\`\`
 
 These clarification questions will be sent back to the end-user to be answered, and the state of the harness can be saved and then restored when answers arrive.
@@ -502,13 +516,22 @@ We can install *strategic checkpoints for confirmation* when actions with side e
 confirmation and adds an additional safety layer without sacrificing the agent's ability to reason and plan.
 
 \`\`\`python
-def confirm(summary: str) -> bool:
+async def human_confirmation(state: RequestState):
     """
-    Send a tool-call summary to the end-user and wait for approval.
+    Human-in-the-loop confirmation node. Automatically routes to this node
+    if the model calls a tool that carries a side effect.
+
+    Interrupts execution to get user approval for tool calls with side effects.
+    Resume with /resume, and processes approval results, modifying state accordingly.
+
+    Preserves memory by appending new messages instead of modifying existing ones.
     """
-    # saves graph state and halts until the user decides
-    approved = interrupt(summary)
-    return approved
+    tool_calls = state['pending_action']['tool_calls']
+
+    # the interrupt() function pauses execution and returns when resumed
+    # requires at least one argument (the value is not used)
+    approval_results = interrupt(None)
+    ...
 \`\`\`
 
 Similar to pre-emptive clarification, a summary of the tool call is sent back to the end-user for confirmation, and requires harness state to be saved and then restored to resume the conversation.
