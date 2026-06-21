@@ -9,6 +9,46 @@ export const projects: Project[] = [
     year: 2026,
     tags: ['langgraph', 'map-reduce', 'langchain', 'cli'],
     github: `https://github.com/${import.meta.env.VITE_GITHUB_HANDLE}/youtube-summarizer`,
+    architecture: `
+flowchart TB
+    subgraph entry["Entry Point / Orchestrator"]
+        app["app.py<br/>argparse + wiring"]
+    end
+
+    subgraph modules["Modules (decoupled)"]
+        fetch["fetch.py<br/>transcript fetching"]
+        summary["summary.py<br/>LangChain / LangGraph summarizer"]
+        ui["ui.py<br/>Rich panels + questionary editor"]
+    end
+
+    subgraph helpers["Helpers"]
+        util["util.py<br/>URL parsing, chunking"]
+        settings["settings.py<br/>config: env + JSON"]
+    end
+
+    subgraph external["External"]
+        yt[/"YouTube<br/>transcripts"/]
+        llm[/"LLM provider<br/>Anthropic / OpenAI"/]
+        json[("settings.json")]
+        user(["User"])
+    end
+
+    app --> fetch
+    app --> summary
+    app --> ui
+    app --> util
+    app --> settings
+    fetch --> util
+    summary --> util
+    ui --> settings
+
+    app -.injects progress callback.-> summary
+    fetch -.fetch transcript.-> yt
+    summary -.summarize.-> llm
+    settings <-.read / write.-> json
+    user -.runs command.-> app
+    app -.summary panel.-> user
+    `,
     content: `
 # Overview
 
@@ -52,6 +92,46 @@ A comprehensive list of features and optimizations is available in the attached 
     year: 2026,
     tags: ['installation', 'multithreading', 'locks', 'sqlite'],
     github: `https://github.com/${import.meta.env.VITE_GITHUB_HANDLE}/transient-thoughts`,
+    architecture: `
+flowchart TB
+    subgraph entry["Entry Point"]
+        main["main.py<br/>argparse + launch"]
+    end
+
+    subgraph orchestrator["Orchestrator"]
+        app["app.py<br/>TransientThoughtsApp<br/>timer · signal handler · settings"]
+    end
+
+    subgraph layers["Layers"]
+        storage["storage.py<br/>ThoughtStorage<br/>SQLite"]
+        settings["settings.py<br/>Settings dataclass<br/>JSON persistence"]
+        ui["ui.py<br/>show_input_window<br/>show_viewer_window<br/>show_settings_window"]
+        tray["tray.py<br/>TrayIcon<br/>pystray · windows-toasts"]
+    end
+
+    subgraph external["External"]
+        db[("SQLite DB<br/>thoughts.db")]
+        json[("settings.json")]
+        toast[/"Windows<br/>Toast (WinRT)"/]
+        trayicon[/"System Tray<br/>Icon"/]
+        user(["User"])
+    end
+
+    main --> app
+    app --> storage
+    app --> settings
+    app --> ui
+    app --> tray
+    ui --> settings
+    storage <--> db
+    settings <--> json
+    tray --> toast
+    tray --> trayicon
+    toast -.nudges.-> user
+    user -.clicks toast.-> app
+    user -.clicks tray.-> app
+    user -.types thought.-> ui
+    `,
     content: `
 # Overview
 
