@@ -551,6 +551,7 @@ Feel free to take a look at the source code on my Github; it's still very experi
     slug: 'mcp-oauth-patterns',
     title: 'OAuth Design Patterns for HTTP MCP Servers',
     date: '2026-01-11',
+    updated: '2026-06-22',
     quarter: 'Q1',
     year: 2026,
     categories: ['technical'],
@@ -559,47 +560,59 @@ Feel free to take a look at the source code on my Github; it's still very experi
     content: `
 # OAuth Design Patterns for HTTP MCP Servers
 
-Implementing OAuth in MCP servers differs in difficulty depending on your intended scope. For local use limited to a constant number of 
-end-user clients, constructing stdio transport-based MCP servers greatly lower the difficulty of incorporating OAuth. 
+## Overview
+
+Before this project, OAuth was something very opaque: I'd clicked through many "Sign in with..." screens as a user, but I'd never 
+completely understood the logic behind them. Adding it to an MCP server became my way of understanding more about these procedures, 
+and the first thing I learned is that implementing OAuth differs in difficulty depending on your intended scope.
+
+For local use on a *single machine*, that difficulty stays manageable. Constructing standard input/output (**stdio**) transport-based MCP
+servers makes incorporating OAuth easy, since you're only ever keeping track of a handful of credentials that can be set up by hand.
 
 ## Beyond local use
 
-However, for enterprise implementations or larger scope usecases, mcp servers must be capable of serving a large number of end-user clients at once, each with
-their OAuth credentials. Furthermore, given the expanded scope of different authorizations, there needs to exist both a seamless flow that end-users can use 
-to authenticate themselves as well as a way to track credentials.
+However, if we want to serve *multiple* end-user clients operating from their own machines, that becomes a different story.
+The mcp server must now keep track of multiple OAuth credentials while simultaneously establishing a seamless, 
+hands-off flow that end-users can use to authenticate themselves automatically.
 
-Here, we turn to streamable http mcp servers, which can either be stateful or stateless HTTP depending on the nature of the tool calls being implemented.
+As such, we turn to **streamable http** mcp servers, which can either be stateful or stateless depending on the nature of the tool calls being implemented.
 
 ## A Layered Approach
 
-When designing this mcp server, my goal was to provide an architectural design that can:
-- serve end-users and manage their oauth credentials asynchronously
-- provide an authorization flow for end users to authenticate themselves
-- decouple OAuth, API, tool calling, and database related logic from each other to allow for extensibility in the future
+> With a streamable http server chosen, the next problem is *architectural layout*. How should the server's logic be structured?
 
-## The OAuth Gateway
+When designing this mcp server, our goal is to provide an architectural design that can:
+1. serve end-users and manage their oauth credentials asynchronously
+2. provide an authorization flow for end users to authenticate themselves securely
+3. decouple OAuth, API, tool calling, and database related logic from each other to allow for extensibility in the future
 
-One of the key architecture decisions was to establish a centralized OAuth gateway, a singular source of truth that handles all OAuth routing logic. All tool
-call requests pass through this node, and the logic here dedetermines if an OAuth-related authorization flow should be triggered. Likewise, if credentials are 
+These goals translate into two central layers: a gateway that decides whether a tool call needs authorization, and a flow that authenticates the end-user when it does.
+
+### The OAuth Gateway
+
+One of the key architecture decisions is to establish a centralized **OAuth gateway**, a singular source of truth that handles all OAuth routing logic. *All tool
+call requests pass through this node*, and the logic here determines if an OAuth-related authorization flow should be triggered. Likewise, if credentials are 
 already present, the tool call request will finish without a problem.
 
 In practice, we attempt to retrieve the credentials associated with an end-user id for all tool call requests that require authorization. If the credentials 
-are not present, then the authorization flow is triggered by throwing a custom error that is caught further upstream. 
+are not present, then the *authorization flow is triggered by throwing a custom error* that is caught further upstream. 
 
 In this manner, OAuth routing logic is decoupled from authorization flow logic.
 
-## The Authorization Flow
+### The Authorization Flow
 
-The authorization flow encompasses the latter half of the authorization process, but the logic here is shared between provider-specific OAuth procedures, the
-API layer, and the end-user. It is a standard OAuth 2.0 flow designed so that third-party authorization is only exposed to the end-user, and not to any middleware.
+When the gateway throws that custom error, it hands control to the authorization flow.
 
-At a high level, the authorization flow for third-party auth can broken down as follows:
-- save the third-party provider state (permission scopes and other metadata)
-- generate a server-hosted link to return to the end-user, that the end-user can click on
-- when the end-user hits the server endpoint, build a third-party auth link from the saved state, including a specific server callback endpoint
-- redirect the end-user to the third-party auth link to authorize
-- third-party service uses the specific server callback to provide confirmation details
-- the server uses the confirmation details to exchange for end-user credentials from the third-party service
+The **authorization flow** encompasses the latter half of the authorization process, but the logic here is shared between provider-specific OAuth procedures, the
+API layer, and the end-user. It is a standard OAuth 2.0 flow designed so that third-party authorization is only exposed to the end-user, and *not* to any middleware.
+
+At a high level, the authorization flow for third-party auth can be broken down as follows:
+1. save the third-party provider state (permission scopes and other metadata)
+2. generate a server-hosted link to return to the end-user, that the end-user can click on
+3. when the end-user hits the server endpoint, build a third-party auth link from the saved state, including a specific server callback endpoint
+4. redirect the end-user to the third-party auth link to authorize
+5. third-party service uses the specific server callback to provide confirmation details
+6. the server uses the confirmation details to exchange for end-user credentials from the third-party service
 
 To decouple the authorization flow from any database-related logic, a thin abstraction around database methods is used to save state.
 Similarly, abstractions are created around third-party providers to allow for further extensibility in the future.
